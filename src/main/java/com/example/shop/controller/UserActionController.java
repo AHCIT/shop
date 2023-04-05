@@ -44,6 +44,12 @@ public class UserActionController {
                     @RequestParam(name = "status") String status,
                     @RequestParam(name = "type", defaultValue = "1") Integer type) {
         try {
+            if (!"1".equals(status) && !"0".equals(status)) {
+                return BaseReturnDto.ofFail("参数异常");
+            }
+            if (type != 1 && type != 2 && type != 3 && type != 4) {
+                return BaseReturnDto.ofFail("参数异常");
+            }
             ActionDetailVo actionDetailVo = userActionService.doAction(userId, infoId, status, type);
             return BaseReturnDto.ofSuccess(actionDetailVo);
         } catch (DuplicateException e) {
