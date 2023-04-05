@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.shop.dto.BaseReturnDto;
 import com.example.shop.exception.DuplicateException;
 import com.example.shop.exception.GetLockException;
+import com.example.shop.exception.ParamException;
 import com.example.shop.service.UserActionService;
 import com.example.shop.vo.ActionDetailVo;
 import com.sun.tools.javac.util.List;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
 
 /**
  * @Author: ahzhouli@outlook.com
@@ -44,7 +44,6 @@ public class UserActionController {
                     @RequestParam(name = "status") String status,
                     @RequestParam(name = "type", defaultValue = "1") Integer type) {
         try {
-            userId = UUID.randomUUID().toString();
             ActionDetailVo actionDetailVo = userActionService.doAction(userId, infoId, status, type);
             return BaseReturnDto.ofSuccess(actionDetailVo);
         } catch (DuplicateException e) {
@@ -53,6 +52,12 @@ public class UserActionController {
         } catch (GetLockException e) {
             log.error("Fail to get lock with userId {}, infoId {}, status {}", userId, infoId, status, e);
             return BaseReturnDto.ofFail(e.getMsg());
+        } catch (ParamException e) {
+            log.error("Fail to do action with wrong params userId {}, infoId {}, status {}", userId, infoId, status, e);
+            return BaseReturnDto.ofFail(e.getMsg());
+        } catch (Exception e) {
+            log.error("Fail to do action userId {}, infoId {}, status {}", userId, infoId, status);
+            return BaseReturnDto.ofFail();
         }
     }
 

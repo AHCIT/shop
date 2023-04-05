@@ -3,6 +3,7 @@ package com.example.shop.strategy.useraction.action;
 import com.example.shop.constant.RedisKeyConstant;
 import com.example.shop.enums.ReturnCode;
 import com.example.shop.exception.DuplicateException;
+import com.example.shop.exception.ParamException;
 import com.example.shop.strategy.useraction.ActionStrategy;
 import com.sun.tools.javac.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,9 @@ public class ScanStrategy extends ActionStrategy {
     public boolean doAction(StringRedisTemplate redisTemplate, RedisScript<Void> setUserAction,
                             RedissonClient redissonClient, String userId, String infoId, String status) {
         Object cache = redisTemplate.opsForHash().get(RedisKeyConstant.REDIS_SCAN_STATUS + userId, infoId);
+        if (cache == null && "0".equals(status)) {
+            throw new ParamException("参数异常");
+        }
         if (cache != null && "0".equals(status) && status.equals(String.valueOf(cache))) {
             throw new DuplicateException(ReturnCode.PARAMETER.getCode(), "重复操作!");
         }
