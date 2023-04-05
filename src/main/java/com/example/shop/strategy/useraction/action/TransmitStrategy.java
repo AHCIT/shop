@@ -1,7 +1,6 @@
 package com.example.shop.strategy.useraction.action;
 
 import com.example.shop.constant.RedisKeyConstant;
-import com.example.shop.enums.ReturnCode;
 import com.example.shop.exception.DuplicateException;
 import com.example.shop.exception.ParamException;
 import com.example.shop.strategy.useraction.ActionStrategy;
@@ -34,7 +33,7 @@ public class TransmitStrategy extends ActionStrategy {
                 throw new ParamException("参数异常");
             }
             if (status.equals(String.valueOf(cache))) {
-                throw new DuplicateException(ReturnCode.PARAMETER.getCode(), "重复操作!");
+                throw new DuplicateException("重复操作!");
             }
         }
         RLock rLock = redissonClient.getLock(REDIS_TRANSMIT_LOCK + infoId);
