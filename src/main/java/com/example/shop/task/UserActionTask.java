@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Author: ahzhouli@outlook.com
- * @Description: TODO
+ * @Description: 行为数据记录入库任务
  * @CreateDate: 2023/4/6 23:43
  * @UpdateUser: zhouli
  * @UpdateDate: 2023/4/6 23:43
