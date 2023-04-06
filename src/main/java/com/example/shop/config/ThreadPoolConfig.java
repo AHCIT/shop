@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Author: ahzhouli@outlook.com
- * @Description: TODO
+ * @Description: 线程池定义
  * @CreateDate: 2023/4/6 22:20
  * @UpdateUser: zhouli
  * @UpdateDate: 2023/4/6 22:20
