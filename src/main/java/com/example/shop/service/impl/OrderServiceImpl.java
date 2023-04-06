@@ -20,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private KafkaTemplate<String, Order> kafkaTemplate;
 
+    @Autowired
+    UserActionServiceImpl userActionServiceImpl;
+
     @Override
     public String demo() {
         return null;

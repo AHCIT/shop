@@ -2,17 +2,6 @@ package com.example.shop.dto;
 
 import com.example.shop.enums.ReturnCode;
 
-/**
- * @Company: 浙江核新同花顺网络信息股份有限公司
- * @ClassName: BaseReturnDto
- * @Description: 基础返回
- * @Author: bianyunlei@myhexin.com
- * @CreateDate: 2020/3/2 9:15
- * @UpdateUser: 更新者
- * @UpdateDate: 2020/3/2 9:15
- * @UpdateRemark: 更新说明
- * @Version: 1.0
- */
 public class BaseReturnDto<T> {
 
 

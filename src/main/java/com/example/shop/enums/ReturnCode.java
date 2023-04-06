@@ -3,14 +3,7 @@
  */
 package com.example.shop.enums;
 
-/**
- * @Company: 浙江核新同花顺网络信息股份有限公司
- * @ClassName: ReturnCodeEnum.java
- * @Description: 返回码
- * @Author: jiangzheng@myhexin.com
- * @CreateDate 2017-7-27下午4:34:06
- * @version: 2.0
- */
+
 public enum ReturnCode {
 
     // 成功

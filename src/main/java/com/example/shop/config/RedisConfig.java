@@ -22,17 +22,6 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-/**
- * @Company: 浙江核新同花顺网络信息股份有限公司
- * @ClassName: RedisConfig
- * @Description: Redis配置
- * @Author: tanchang@myhexin.com
- * @CreateDate: 2020/5/18 14:19
- * @UpdateUser: zhouli5@myhexin.com
- * @UpdateDate: 2020/5/18 14:19
- * @UpdateRemark: 更新说明
- * @version: V2.1.0
- */
 @Slf4j
 @Configuration
 @EnableCaching

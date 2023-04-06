@@ -1,8 +1,6 @@
 package com.example.shop.strategy.useraction;
 
-import org.redisson.api.RedissonClient;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.script.RedisScript;
+import com.example.shop.service.impl.UserActionServiceImpl;
 
 /**
  * @Author: ahzhouli@outlook.com
@@ -14,6 +12,6 @@ import org.springframework.data.redis.core.script.RedisScript;
  * @Version: 1.0
  */
 public abstract class ActionStrategy {
-    public abstract boolean doAction(StringRedisTemplate redisTemplate, RedisScript<Void> setUserAction,
-                                     RedissonClient redissonClient, String userId, String infoId, String status);
+    public abstract boolean doAction(UserActionServiceImpl userActionService, String userId, String infoId,
+                                     String status);
 }

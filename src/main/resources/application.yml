@@ -34,3 +34,5 @@ server:
     max-connections: 8192
 redission:
   address: 'redis://127.0.0.1:6712'
+logging:
+  config: 'classpath:log/logback.xml'

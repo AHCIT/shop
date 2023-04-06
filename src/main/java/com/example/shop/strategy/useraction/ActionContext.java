@@ -1,8 +1,6 @@
 package com.example.shop.strategy.useraction;
 
-import org.redisson.api.RedissonClient;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.script.RedisScript;
+import com.example.shop.service.impl.UserActionServiceImpl;
 
 /**
  * @Author: ahzhouli@outlook.com
@@ -20,8 +18,7 @@ public class ActionContext {
         this.actionStrategy = actionStrategy;
     }
 
-    public boolean doStrategy(StringRedisTemplate redisTemplate, RedisScript<Void> setUserAction,
-                              RedissonClient redissonClient, String userId, String infoId, String status) {
-        return actionStrategy.doAction(redisTemplate, setUserAction, redissonClient, userId, infoId, status);
+    public boolean doStrategy(UserActionServiceImpl userActionService, String userId, String infoId, String status) {
+        return actionStrategy.doAction(userActionService, userId, infoId, status);
     }
 }

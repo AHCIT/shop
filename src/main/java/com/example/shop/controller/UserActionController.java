@@ -10,6 +10,7 @@ import com.example.shop.vo.ActionDetailVo;
 import com.sun.tools.javac.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,10 @@ public class UserActionController {
     private RedisScript<String> getUserAction;
     @Autowired
     private UserActionService userActionService;
+    @Autowired
+    private TaskExecutor userActionExecutor;
+    @Autowired
+    private TaskExecutor infoActionExecutor;
 
     @GetMapping("/doAction")
     Object doAction(@RequestParam(name = "infoId") String infoId,
@@ -50,6 +55,9 @@ public class UserActionController {
             if (type != 1 && type != 2 && type != 3 && type != 4) {
                 return BaseReturnDto.ofFail("参数异常");
             }
+            userActionExecutor.execute(() -> {
+                log.info("Thread name: {}", Thread.currentThread().getName());
+            });
             ActionDetailVo actionDetailVo = userActionService.doAction(userId, infoId, status, type);
             return BaseReturnDto.ofSuccess(actionDetailVo);
         } catch (DuplicateException e) {
@@ -71,6 +79,9 @@ public class UserActionController {
     Object getStatus(@RequestParam(name = "userId") String userId,
                      @RequestParam(name = "infoId") String infoId) {
         try {
+            infoActionExecutor.execute(() -> {
+                log.info("Thread name: {}", Thread.currentThread().getName());
+            });
             String result = redisTemplate.execute(getUserAction, List.of(userId, infoId));
             return BaseReturnDto.ofSuccess(JSON.parseObject(result, ActionDetailVo.class));
         } catch (Exception e) {
