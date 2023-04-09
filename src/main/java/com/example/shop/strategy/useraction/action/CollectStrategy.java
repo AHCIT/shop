@@ -32,7 +32,7 @@ public class CollectStrategy extends ActionStrategy {
             throw new DuplicateException("重复操作!");
         }
         RLock rLock = actionService.getRedissonClient().getLock(REDIS_COLLECT_LOCK + infoId);
-        if (rLock == null) {
+        if (rLock.isLocked()) {
             log.error("Fail to get collect lock! userId {}, infoId {}", userId, infoId);
             return false;
         }

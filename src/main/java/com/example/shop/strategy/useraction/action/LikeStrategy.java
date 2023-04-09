@@ -33,7 +33,7 @@ public class LikeStrategy extends ActionStrategy {
             throw new DuplicateException("重复操作!");
         }
         RLock rLock = actionService.getRedissonClient().getLock(REDIS_LIKE_LOCK + infoId);
-        if (rLock == null) {
+        if (rLock.isLocked()) {
             log.error("Fail to get like lock! userId {}, infoId {}", userId, infoId);
             return false;
         }

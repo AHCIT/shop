@@ -34,7 +34,7 @@ public class TransmitStrategy extends ActionStrategy {
             }
         }
         RLock rLock = actionService.getRedissonClient().getLock(REDIS_TRANSMIT_LOCK + infoId);
-        if (rLock == null) {
+        if (rLock.isLocked()) {
             log.error("Fail to get transmit lock! userId {}, infoId {}", userId, infoId);
             return false;
         }

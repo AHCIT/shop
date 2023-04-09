@@ -34,7 +34,7 @@ public class ScanStrategy extends ActionStrategy {
             }
         }
         RLock rLock = actionService.getRedissonClient().getLock(REDIS_SCAN_LOCK + infoId);
-        if (rLock == null) {
+        if (rLock.isLocked()) {
             log.error("Fail to get scan lock! userId {}, infoId {}", userId, infoId);
             return false;
         }
