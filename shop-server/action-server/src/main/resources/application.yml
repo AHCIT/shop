@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: 'action-service'
+  boot:
+    admin:
+      client:
+        url: 'http://192.168.1.4:8082'
+        instance:
+          service-url: http://192.168.1.11:8081
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+eureka:
+  instance:
+    instance-id: ${spring.application.name}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://192.168.1.4:8761/eureka/
+server:
+  port: 8081
+  tomcat:
+    threads:
+      max: 200
+    accept-count: 100
+    max-connections: 8192
+redission:
+  address: 'redis://127.0.0.1:6379'
+logging:
+  config: 'classpath:log/logback.xml'

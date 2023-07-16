@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <springProperty scope="context" name="APPLICATION_NAME"
+                    source="spring.application.name" defaultValue="app"/>
+    <conversionRule conversionWord="tid"
+                    converterClass="org.apache.skywalking.apm.toolkit.log.logback.v1.x.LogbackPatternConverter"/>
+    <property name="LOG_HOME" value="logs"/>
+    <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/yyzt-info-%d.log</FileNamePattern>
+            <MaxHistory>14</MaxHistory> <!--     最多14个文件 -->
+            <!-- 启动时把不符合MaxHistory的文件删掉 -->
+            <CleanHistoryOnStart>true</CleanHistoryOnStart>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                {"timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}", "level": "%level", "business": "${APPLICATION_NAME}",
+                "traceId": "%tid", "thread": "%thread", "logger": "%logger{30}", "message": "%message", "stackTrace":
+                "%exception{10}" }%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder
+                class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers
+                    class="net.logstash.logback.composite.loggingevent.LoggingEventJsonProviders">
+                <pattern>
+                    <pattern>
+                        {
+                        "timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}",
+                        "level": "%level",
+                        "business": "${APPLICATION_NAME}",
+                        "traceId": "%tid",
+                        "thread": "%thread",
+                        "logger": "%logger{30}",
+                        "message": "%message",
+                        "stackTrace": "%exception{10}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!--日志接入skywalking-->
+    <appender name="GRPC-LOG" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{36} -%msg%n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <logger name="ch.qos.logback" level="ERROR" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="net.rubyeye" level="ERROR" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="com.google" level="ERROR" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework.boot.autoconfigure" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework.beans.factory" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="com.hexin" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="GRPC-LOG"/>
+    </logger>
+
+    <root level="INFO">
+        <!--    <root level="DEBUG">-->
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="GRPC-LOG"/>
+    </root>
+</configuration>
+
